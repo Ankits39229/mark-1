@@ -3,4 +3,4 @@
 /dist
 /.vscode
 .github
-tasks.json
+/tasks

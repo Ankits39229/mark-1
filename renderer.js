@@ -8,7 +8,9 @@ const PageManager = {
         dashboard: DashboardPage,
         profile: ProfilePage,
         settings: SettingsPage,
-        about: AboutPage
+        about: AboutPage,
+        contact: ContactPage,
+        help: HelpPage
     },
     
     // Load a specific page
@@ -51,29 +53,18 @@ const PageManager = {
     }
 };
 
+// Global function to handle navigation (called from CollapsibleSidebar)
+window.navigateToPage = function(pageName) {
+    PageManager.loadPage(pageName);
+};
+
 // Initialize the application
 document.addEventListener('DOMContentLoaded', () => {
-    const navLinks = document.querySelectorAll('.nav-link');
-    
-    // Add click event listeners to navigation links
-    navLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            
-            const pageName = link.getAttribute('data-page');
-            
-            // Remove active class from all nav items
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            
-            // Add active class to clicked nav item
-            link.parentElement.classList.add('active');
-            
-            // Load the selected page
-            PageManager.loadPage(pageName);
-        });
-    });
+    // Initialize the collapsible sidebar
+    const sidebarContainer = document.getElementById('sidebar-container');
+    if (sidebarContainer) {
+        window.sidebarInstance = new CollapsibleSidebar(sidebarContainer);
+    }
 
     // Initialize window control buttons
     const minimizeBtn = document.getElementById('minimize-btn');
@@ -104,4 +95,4 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Optional: Add some global functionality
-console.log('Electron Sidebar App with modular pages loaded successfully!');
+console.log('Electron Sidebar App with collapsible sidebar loaded successfully!');

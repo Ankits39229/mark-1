@@ -115,75 +115,13 @@ body {
     /* Ensure seamless connection */
 }
 
-/* Sidebar Styles */
-.sidebar {
-    width: 250px;
-    background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
-    color: white;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-    height: 100%; /* Full height of main-app-content */
-    /* Remove top border to eliminate any seams */
+/* Container for the new collapsible sidebar */
+#sidebar-container {
+    flex-shrink: 0; /* Don't shrink the sidebar */
 }
 
-.sidebar-header {
-    padding: 20px;
-    border-bottom: 1px solid #34495e;
-    text-align: center;
-}
-
-.sidebar-header h2 {
-    font-size: 1.5em;
-    font-weight: 300;
-    color: #ecf0f1;
-}
-
-.sidebar-nav {
-    list-style: none;
-    flex: 1;
-    padding-top: 20px;
-}
-
-.nav-item {
-    margin-bottom: 5px;
-}
-
-.nav-link {
-    display: flex;
-    align-items: center;
-    padding: 15px 20px;
-    color: #bdc3c7;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    cursor: pointer;
-}
-
-.nav-link:hover {
-    background-color: #3498db;
-    color: white;
-    transform: translateX(5px);
-}
-
-.nav-item.active .nav-link {
-    background-color: #3498db;
-    color: white;
-    border-right: 3px solid #2980b9;
-}
-
-.nav-icon {
-    font-size: 1.2em;
-    margin-right: 12px;
-    width: 20px;
-    text-align: center;
-}
-
-.nav-text {
-    font-size: 0.95em;
-    font-weight: 400;
-}
-
-/* Main Content Styles */
+/* Remove old sidebar styles and replace with updated main content */
+/* Main Content Styles - Updated for collapsible sidebar */
 .main-content {
     flex: 1;
     display: flex;
