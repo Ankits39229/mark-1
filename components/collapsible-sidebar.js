@@ -13,7 +13,8 @@ class CollapsibleSidebar {
       { id: 'settings', icon: '⚙️', label: 'Settings', page: 'settings' },
       { id: 'about', icon: 'ℹ️', label: 'About', page: 'about' },
       { id: 'contact', icon: '📞', label: 'Contact', page: 'contact' },
-      { id: 'help', icon: '❓', label: 'Help', page: 'help' }
+      { id: 'help', icon: '❓', label: 'Help', page: 'help' },
+      { id: 'faq', icon: '📚', label: 'FAQ', page: 'faq' }
     ];
     
     this.activeItem = 'home';

@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Electron Sidebar App</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baumans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="styles/collapsible-sidebar.css">
 </head>
@@ -13,8 +16,11 @@
         <div class="custom-title-bar">
             <div class="title-bar-left">
                 <div class="app-logo">
-                    <span class="logo-icon">⚡</span>
-                    <span class="app-name">Electron Sidebar App</span>
+                    <div class="logo-icon">
+                        <img src="assets/icon.png" alt="Technician Icon" onerror="this.style.display='none'; this.parentNode.querySelector('.fallback-icon').style.display='flex';">
+                        <span class="fallback-icon" style="display:none;">🔧</span>
+                    </div>
+                    <span class="app-name">TECHNICIAN</span>
                 </div>
             </div>
             <div class="title-bar-right">

@@ -12,38 +12,25 @@
 }
 
 .collapsible-sidebar.expanded {
-  width: 120px; /* Reduced width to maintain square buttons */
+  width: 100px; /* Reduced width to accommodate smaller buttons */
 }
 
 .sidebar-content {
   flex: 1;
-  padding: 10px 0;
-  overflow-y: auto; /* Allow scrolling if too many nav items */
-}
-
-/* Scrollbar styling for when there are many nav items */
-.sidebar-content::-webkit-scrollbar {
-  width: 4px;
-}
-
-.sidebar-content::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.sidebar-content::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.1);
-  border-radius: 2px;
-}
-
-.sidebar-content::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.2);
+  padding: 8px 0;
+  overflow: visible; /* Remove scroll, optimize space usage */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly; /* Distribute items evenly */
 }
 
 .nav-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 8px;
+  gap: 4px; /* Reduced gap for more items */
+  padding: 4px;
+  height: 100%;
+  justify-content: space-evenly; /* Even distribution */
 }
 
 .nav-item {
@@ -51,24 +38,25 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
+  width: 38px;
+  height: 38px; /* Reduced from 44px to fit more items */
   margin: 0 auto;
-  border-radius: 10px;
+  border-radius: 8px; /* Slightly smaller border radius */
   cursor: pointer;
   transition: all 0.3s ease;
   color: #000000;
   position: relative;
   overflow: hidden;
   box-sizing: border-box;
+  flex-shrink: 0; /* Prevent shrinking */
 }
 
 /* Expanded state styling - keep square shape */
 .collapsible-sidebar.expanded .nav-item {
-  width: 88px;
-  height: 88px;
+  width: 72px; /* Reduced from 88px */
+  height: 72px; /* Reduced from 88px */
   margin: 0 auto;
-  padding: 8px;
+  padding: 6px; /* Reduced padding */
 }
 
 .nav-item:hover {
@@ -86,14 +74,14 @@
   font-weight: 500;
 }
 
-/* Active state indicator - adapted for square buttons */
+/* Active state indicator - adapted for smaller square buttons */
 .nav-item.active::after {
   content: '';
   position: absolute;
   right: -2px;
   top: 50%;
   transform: translateY(-50%);
-  height: 20px;
+  height: 16px; /* Reduced from 20px */
   width: 3px;
   background-color: #2c3e50;
   border-radius: 2px 0 0 2px;
@@ -101,13 +89,13 @@
 
 .collapsible-sidebar.expanded .nav-item.active::after {
   right: -2px;
-  height: 30px;
+  height: 24px; /* Reduced from 30px */
   top: 50%;
   transform: translateY(-50%);
 }
 
 .nav-icon {
-  font-size: 20px;
+  font-size: 18px; /* Reduced from 20px */
   width: auto;
   height: auto;
   text-align: center;
@@ -121,8 +109,8 @@
 
 /* Expanded state icon styling */
 .collapsible-sidebar.expanded .nav-icon {
-  font-size: 22px;
-  margin-bottom: 6px;
+  font-size: 20px; /* Reduced from 22px */
+  margin-bottom: 4px;
 }
 
 .nav-item:hover .nav-icon {
@@ -134,16 +122,16 @@
 }
 
 .nav-label {
-  font-size: 10px;
+  font-size: 9px; /* Reduced font size to fit better */
   font-weight: 600;
   opacity: 0;
-  transform: translateY(10px);
+  transform: translateY(8px); /* Reduced transform distance */
   transition: all 0.3s ease;
   white-space: nowrap;
   text-align: center;
   color: #000000;
-  letter-spacing: 0.3px;
-  line-height: 1.2;
+  letter-spacing: 0.2px;
+  line-height: 1.1; /* Tighter line height */
 }
 
 .collapsible-sidebar.expanded .nav-label {
@@ -179,7 +167,7 @@
 /* Animation for smooth transitions */
 @keyframes slideUp {
   from {
-    transform: translateY(10px);
+    transform: translateY(8px);
     opacity: 0;
   }
   to {
