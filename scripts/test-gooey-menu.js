@@ -1,5 +1,5 @@
 // Test script for gooey menu functionality
-console.log('Gooey Menu Test Script Loaded');
+console.log('Gooey Menu Test Script Loaded - Left Direction with 3 Buttons');
 
 // Test function to verify menu is working
 function testGooeyMenu() {
@@ -12,16 +12,24 @@ function testGooeyMenu() {
             console.log('✅ Toggle button found');
             
             const menuItems = menuContainer.querySelectorAll('.gooey-menu-item');
-            console.log(`✅ Found ${menuItems.length} menu items`);
+            console.log(`✅ Found ${menuItems.length} menu items (expected: 3)`);
+            
+            // List the menu items
+            menuItems.forEach((item, index) => {
+                const value = item.getAttribute('data-value');
+                const label = item.getAttribute('aria-label');
+                console.log(`   ${index + 1}. ${label} (${value})`);
+            });
             
             // Test toggle functionality
             setTimeout(() => {
-                console.log('🧪 Testing menu toggle...');
+                console.log('🧪 Testing menu toggle (left direction)...');
                 toggleButton.click();
                 
                 setTimeout(() => {
                     toggleButton.click();
                     console.log('✅ Menu toggle test complete');
+                    console.log('🎨 Try clicking the theme button to test dark/light mode!');
                 }, 2000);
             }, 3000);
         } else {

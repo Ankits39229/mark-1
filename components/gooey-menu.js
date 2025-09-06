@@ -216,18 +216,17 @@ class GooeyMenu {
 
 // Initialize gooey menu when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-    // Default menu items
-    const defaultItems = [
-        { icon: '🏠', name: 'Home', value: 'home' },
-        { icon: '✉️', name: 'Mail', value: 'mail' },
-        { icon: '👤', name: 'User', value: 'user' },
-        { icon: '⚙️', name: 'Settings', value: 'settings' }
+    // Custom menu items for your app
+    const customItems = [
+        { icon: '🔄', name: 'Check for Updates', value: 'updates' },
+        { icon: '🔔', name: 'Notifications', value: 'notifications' },
+        { icon: '🌙', name: 'Theme Toggle', value: 'theme' }
     ];
 
     // Create gooey menu instances
     const bottomRightMenu = new GooeyMenu('gooey-menu-bottom-right', {
-        items: defaultItems,
-        direction: 'top',
+        items: customItems,
+        direction: 'left',
         onChange: (item, index) => {
             console.log('Menu item clicked:', item.name, item.value);
             // Add your custom logic here
@@ -238,20 +237,105 @@ document.addEventListener('DOMContentLoaded', function() {
     // Handle menu actions
     function handleMenuAction(action) {
         switch(action) {
-            case 'home':
-                if (typeof loadPage === 'function') loadPage('home');
+            case 'updates':
+                checkForUpdates();
                 break;
-            case 'mail':
-                console.log('Mail functionality not implemented yet');
+            case 'notifications':
+                toggleNotifications();
                 break;
-            case 'user':
-                if (typeof loadPage === 'function') loadPage('profile');
-                break;
-            case 'settings':
-                if (typeof loadPage === 'function') loadPage('settings');
+            case 'theme':
+                toggleTheme();
                 break;
             default:
                 console.log('Unknown action:', action);
         }
+    }
+
+    // Custom action functions
+    function checkForUpdates() {
+        console.log('Checking for updates...');
+        // Show a notification or modal
+        showNotification('Checking for updates...', 'info');
+    }
+
+    function toggleNotifications() {
+        console.log('Toggling notifications...');
+        // Toggle notification panel or settings
+        showNotification('Notifications panel opened', 'info');
+    }
+
+    function toggleTheme() {
+        console.log('Toggling theme...');
+        // Toggle between light and dark theme
+        const body = document.body;
+        const isCurrentlyDark = body.classList.contains('dark-theme');
+        
+        if (isCurrentlyDark) {
+            body.classList.remove('dark-theme');
+            localStorage.setItem('theme', 'light');
+            updateThemeIcon('🌙');
+            showNotification('Switched to Light Theme', 'success');
+        } else {
+            body.classList.add('dark-theme');
+            localStorage.setItem('theme', 'dark');
+            updateThemeIcon('☀️');
+            showNotification('Switched to Dark Theme', 'success');
+        }
+    }
+
+    function updateThemeIcon(newIcon) {
+        const themeButton = document.querySelector('[data-value="theme"]');
+        if (themeButton) {
+            themeButton.innerHTML = newIcon + '<span class="sr-only">Theme Toggle</span>';
+        }
+    }
+
+    function showNotification(message, type = 'info') {
+        // Create a simple notification
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: ${type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#2196F3'};
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 10000;
+            font-family: inherit;
+            font-size: 14px;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+        `;
+        notification.textContent = message;
+        document.body.appendChild(notification);
+
+        // Animate in
+        setTimeout(() => {
+            notification.style.opacity = '1';
+            notification.style.transform = 'translateX(0)';
+        }, 10);
+
+        // Remove after 3 seconds
+        setTimeout(() => {
+            notification.style.opacity = '0';
+            notification.style.transform = 'translateX(100%)';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 300);
+        }, 3000);
+    }
+
+    // Load saved theme on startup and set appropriate icon
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark-theme');
+        setTimeout(() => updateThemeIcon('☀️'), 500);
+    } else {
+        setTimeout(() => updateThemeIcon('🌙'), 500);
     }
 });

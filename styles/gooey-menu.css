@@ -41,8 +41,8 @@
 
 .gooey-menu-item:hover {
     opacity: 1;
-    transform: scale(1.1) !important;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
 .gooey-menu-item.animate-out {
@@ -182,12 +182,10 @@
     animation: pulse 2s infinite;
 }
 
-/* Staggered animation for menu items */
+/* Staggered animation for menu items (adjusted for 3 items) */
 .gooey-menu-item:nth-child(1) { transition-delay: 0ms; }
 .gooey-menu-item:nth-child(2) { transition-delay: 50ms; }
 .gooey-menu-item:nth-child(3) { transition-delay: 100ms; }
-.gooey-menu-item:nth-child(4) { transition-delay: 150ms; }
-.gooey-menu-item:nth-child(5) { transition-delay: 200ms; }
 
 /* Responsive design */
 @media (max-width: 768px) {
@@ -207,4 +205,25 @@
     .gooey-menu-toggle {
         font-size: 16px;
     }
+}
+
+/* Dark theme support */
+.dark-theme .gooey-menu-item {
+    background-color: #2d2d2d;
+    color: #e0e0e0;
+    border: 1px solid #404040;
+}
+
+.dark-theme .gooey-menu-item:hover {
+    background: linear-gradient(135deg, #4a9eff 0%, #764ba2 100%);
+    border-color: #4a9eff;
+}
+
+.dark-theme .gooey-menu-toggle {
+    background: linear-gradient(135deg, #4a9eff 0%, #764ba2 100%);
+    border: 1px solid #404040;
+}
+
+.dark-theme .gooey-menu-toggle:hover {
+    box-shadow: 0 6px 20px rgba(74, 158, 255, 0.4);
 }

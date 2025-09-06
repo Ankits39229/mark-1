@@ -331,6 +331,67 @@ body {
     }
 }
 
+/* Dark Theme Styles */
+.dark-theme {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+}
+
+.dark-theme .custom-title-bar {
+    background-color: #2d2d2d;
+}
+
+.dark-theme .app-name {
+    color: #4a9eff;
+}
+
+.dark-theme .app-name:hover {
+    color: #ff4757;
+    background-color: #000;
+}
+
+.dark-theme .window-control {
+    color: #e0e0e0;
+}
+
+.dark-theme .window-control:hover {
+    background: #404040;
+}
+
+.dark-theme .main-content {
+    background-color: #1a1a1a;
+}
+
+.dark-theme .content-header {
+    background-color: #2d2d2d;
+    color: #e0e0e0;
+}
+
+.dark-theme .content-header h1 {
+    color: #e0e0e0;
+}
+
+.dark-theme .card {
+    background: #2d2d2d;
+    color: #e0e0e0;
+}
+
+.dark-theme .card h3 {
+    color: #4a9eff;
+}
+
+.dark-theme .card p {
+    color: #b0b0b0;
+}
+
+.dark-theme .welcome-section h2 {
+    color: #e0e0e0;
+}
+
+.dark-theme .welcome-section p {
+    color: #b0b0b0;
+}
+
 /* Additional styles for interactive page elements */
 .card-button {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
