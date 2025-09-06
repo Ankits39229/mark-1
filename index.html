@@ -6,99 +6,11 @@
     <title>Electron Sidebar App</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Baumans&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="styles/collapsible-sidebar.css">
-    <link rel="stylesheet" href="styles/gooey-menu.css">
-    <link rel="stylesheet" href="styles/sparkles-header.css">
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&family=Baumans&display=swap" rel="stylesheet">
+
 </head>
 <body>
-    <div class="app-container">
-        <!-- Custom Title Bar -->
-        <div class="custom-title-bar">
-            <div class="title-bar-left">
-                <div class="app-logo">
-                    <div class="logo-icon">
-                        <img src="assets/icon.png" alt="Technician Icon" onerror="this.style.display='none'; this.parentNode.querySelector('.fallback-icon').style.display='flex';">
-                        <span class="fallback-icon" style="display:none;">🔧</span>
-                    </div>
-                    <span class="app-name">TECHNICIAN</span>
-                </div>
-            </div>
-            <div class="title-bar-right">
-                <button class="window-control minimize-btn" id="minimize-btn" title="Minimize">
-                    <span class="control-icon">─</span>
-                </button>
-                <button class="window-control close-btn" id="close-btn" title="Close">
-                    <span class="control-icon">✕</span>
-                </button>
-            </div>
-        </div>
-
-        <!-- Main App Content (Sidebar + Content) -->
-        <div class="main-app-content">
-            <!-- Collapsible Side Navigation -->
-            <div id="sidebar-container"></div>
-
-            <!-- Main Content Area -->
-            <main class="main-content">
-                <header class="content-header">
-                    <h1 id="page-title">Welcome Home</h1>
-                </header>
-                
-                <div class="content-body">
-                    <div id="page-content">
-                        <div class="welcome-section">
-                            <h2>Hello! Welcome to your Electron App</h2>
-                            <p>This is a simple Electron application with a collapsible side navigation bar.</p>
-                            <p>Hover over the thin sidebar to see the navigation options expand with beautiful animations.</p>
-                            
-                            <div class="feature-cards">
-                                <div class="card">
-                                    <h3>🚀 Fast & Responsive</h3>
-                                    <p>Built with Electron for cross-platform compatibility</p>
-                                </div>
-                                <div class="card">
-                                    <h3>🎨 Clean Design</h3>
-                                    <p>Beautiful collapsible sidebar with shadcn-inspired design</p>
-                                </div>
-                                <div class="card">
-                                    <h3>📱 Navigation</h3>
-                                    <p>Hover-to-expand sidebar navigation with tooltips</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </main>
-        </div>
-    </div>
-
-    <!-- Gooey Menu - Fixed Bottom Right -->
-    <div id="gooey-menu-bottom-right" class="gooey-menu-fixed"></div>
-
-    <!-- Collapsible Sidebar Component -->
-    <script src="components/collapsible-sidebar.js"></script>
-    
-    <!-- Sparkles Canvas Component -->
-    <script src="scripts/sparkles-canvas.js"></script>
-    
-    <!-- Gooey Menu Component -->
-    <script src="components/gooey-menu.js"></script>
-    
-    <!-- Test Script (remove in production) -->
-    <script src="scripts/test-gooey-menu.js"></script>
-    
-    <!-- Page Scripts -->
-    <script src="pages/home.js"></script>
-    <script src="pages/dashboard.js"></script>
-    <script src="pages/profile.js"></script>
-    <script src="pages/settings.js"></script>
-    <script src="pages/about.js"></script>
-    <script src="pages/contact.js"></script>
-    <script src="pages/help.js"></script>
-    
-    <!-- Main Renderer Script -->
-    <script src="renderer.js"></script>
+    <div id="root"></div>
+    <script type="module" src="./src/main.tsx"></script>
 </body>
 </html>

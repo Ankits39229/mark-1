@@ -43,7 +43,7 @@ function createWindow() {
   });
 
   // Load the index.html of the app
-  mainWindow.loadFile('index.html');
+  mainWindow.loadFile(path.join(__dirname, 'dist/index.html'));
 
   // Show window when ready to prevent visual flash
   mainWindow.once('ready-to-show', () => {

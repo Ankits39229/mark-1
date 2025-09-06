@@ -1,27 +1,60 @@
-import './globals.css'
-import GooeyButtonDemo from './components/ui/gooey-menu/demo'
-import SparklesHeader from './components/SparklesHeader'
+import React, { useState } from 'react';
+import './globals.css';
+import TitleBar from './components/layout/TitleBar.tsx';
+import { AppSidebar } from './components/layout/AppSidebar.tsx';
+
+// Import all pages
+import HomePage from './components/pages/Home.tsx';
+import DashboardPage from './components/pages/Dashboard.tsx';
+import ProfilePage from './components/pages/Profile.tsx';
+import SettingsPage from './components/pages/Settings.tsx';
+import HelpPage from './components/pages/Help.tsx';
+import FaqPage from './components/pages/Faq.tsx';
+import ContactPage from './components/pages/Contact.tsx';
+import AboutPage from './components/pages/About.tsx';
+
+// Page mapping
+const pageComponents: Record<string, React.ComponentType> = {
+  home: HomePage,
+  dashboard: DashboardPage,
+  profile: ProfilePage,
+  settings: SettingsPage,
+  help: HelpPage,
+  faq: FaqPage,
+  contact: ContactPage,
+  about: AboutPage,
+};
 
 function App() {
+  const [currentPage, setCurrentPage] = useState<string>('home');
+
+  const handlePageChange = (page: string) => {
+    setCurrentPage(page);
+  };
+
+  const CurrentPageComponent = pageComponents[currentPage] || HomePage;
+
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      {/* Sparkles Header */}
-      <SparklesHeader />
-      
-      {/* Your existing Electron app content here */}
-      <div className="p-8">
-        <h1 className="text-2xl font-bold mb-8">Electron + React + Gooey Menu</h1>
-        
-        {/* Demo of the Gooey Menu */}
-        <GooeyButtonDemo />
-        
-        {/* Fixed position gooey menu in bottom right as requested */}
-        <div className="fixed bottom-6 right-6 z-50">
-          <GooeyButtonDemo />
-        </div>
+    <div className="app-container">
+      <TitleBar />
+      <div className="flex">
+        <AppSidebar 
+          currentPage={currentPage}
+          onPageChange={handlePageChange}
+        />
+        <main 
+          className="flex-1 overflow-auto" 
+          style={{ 
+            backgroundColor: '#EAF4F4', 
+            height: 'calc(100vh - 60px)',
+            marginLeft: '60px' // Matches collapsed sidebar width
+          }}
+        >
+          <CurrentPageComponent />
+        </main>
       </div>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
