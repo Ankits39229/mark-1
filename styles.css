@@ -212,8 +212,12 @@ body {
     color: #000000;
     border: none;
     margin: 0;
-    height: 120px; /* matches sparkles header intended total height */
+    height: 120px; 
 }
+
+/* When sparkles header is active avoid forcing text color */
+.content-header[data-sparkles-active="true"] { color: inherit; }
+.content-header[data-sparkles-active="true"] h1 { color: inherit; }
 
 .content-header h1 {
     font-size: 2em;
