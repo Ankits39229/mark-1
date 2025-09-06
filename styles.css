@@ -210,10 +210,9 @@ body {
 .content-header {
     background-color: #f0f7f7;
     color: #000000;
-    padding: 10px 40px 30px 40px;
     border: none;
     margin: 0;
-    /* Completely seamless connection - no margin, border, or shadow */
+    height: 120px; /* matches sparkles header intended total height */
 }
 
 .content-header h1 {

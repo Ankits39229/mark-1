@@ -1,42 +1,31 @@
 /* Sparkles Ribbon Header Styles */
 .sparkles-header {
-  /* Constrain vertical size for ribbon appearance */
-  height: 150px;
+  height: 100%; /* fill parent content-header when active */
   width: 100%;
-  background: #EAF4F4;
+  background: transparent; /* no separate background */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  border-radius: 0; /* flush with content-header */
+  border-radius: 0;
   position: relative;
-  margin: 0; /* no extra vertical spacing */
-  padding: 0 20px;
+  margin: 0;
+  padding: 0 16px;
   box-sizing: border-box;
 }
 
 .sparkles-title {
-  font-size: clamp(2.6rem, 5vw, 4rem);
-  font-weight: 700;
-  letter-spacing: 3px;
+  font-size: clamp(3rem, 5vw, 4.5rem);
+  font-weight: 600;
+  letter-spacing: 2px;
   text-align: center;
-  color: #CCE3DE;
+  color: #CCE3DE; /* plain color only */
   position: relative;
   z-index: 20;
-  margin: 0 0 10px 0;
+  margin: 0 0 8px 0;
   line-height: 1;
   font-family: 'Baumans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  /* layered glow */
-  text-shadow:
-    0 0 2px #CCE3DE,
-    0 0 6px rgba(107,144,128,0.5),
-    0 0 14px rgba(107,144,128,0.35);
-  background: linear-gradient(90deg, #CCE3DE 0%, #6b9080 50%, #CCE3DE 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.15));
   pointer-events: none;
   user-select: none;
 }
@@ -44,7 +33,7 @@
 .sparkles-canvas-container {
   width: 100%;
   max-width: 100%;
-  height: 60px; /* fits under title within 150px total */
+  height: 85px;
   position: relative;
   margin: 0;
 }
@@ -62,7 +51,7 @@
 .gradient-line {
   position: absolute;
   top: 0;
-  height: 2px;
+  height: 3px;
   z-index: 5;
 }
 
@@ -107,8 +96,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: #EAF4F4;
-  /* tighter radial mask suited to shorter ribbon */
+  background: inherit; /* blend with header background */
   -webkit-mask: radial-gradient(400px 120px at top, transparent 15%, white 70%);
   mask: radial-gradient(400px 120px at top, transparent 15%, white 70%);
   z-index: 15;
