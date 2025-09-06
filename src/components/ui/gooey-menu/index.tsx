@@ -9,7 +9,6 @@ import {
     Transition,
 } from "framer-motion";
 import { useEffect, useId, useState } from "react";
-import { TbX, TbMenu } from "react-icons/tb";
 
 const blurAni: MotionProps = {
   variants: {
@@ -92,7 +91,7 @@ function GooeyMenu({
                   custom={idx}
                   animate={{
                     [axis]: open
-                      ? `calc(${100 * dir * (idx + 1)}% + ${-(idx + 1) * dir * 10}px )`
+                      ? `calc(${100 * dir * (idx + 1)}% + ${-(idx + 1) * dir * 15}px )`
                       : 0,
                   }}
                   className={cn(
@@ -129,7 +128,7 @@ function GooeyMenu({
           >
             <AnimatePresence mode="popLayout" initial={false}>
               <motion.span {...blurAni} key={open ? "open" : "close"}>
-                {open ? <TbX /> : <TbMenu />}
+                {open ? ">" : "<"}
               </motion.span>
             </AnimatePresence>
           </button>

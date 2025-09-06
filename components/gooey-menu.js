@@ -60,8 +60,8 @@ class GooeyMenu {
                         aria-expanded="false"
                         aria-label="Open menu"
                     >
-                        <span class="gooey-menu-icon menu-icon">☰</span>
-                        <span class="gooey-menu-icon close-icon">✕</span>
+                        <span class="gooey-menu-icon menu-icon">~</span>
+                        <span class="gooey-menu-icon close-icon">~</span>
                     </button>
                 </div>
             </div>
