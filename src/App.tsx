@@ -1,9 +1,13 @@
 import './globals.css'
 import GooeyButtonDemo from './components/ui/gooey-menu/demo'
+import SparklesHeader from './components/SparklesHeader'
 
 function App() {
   return (
     <div className="min-h-screen bg-background text-foreground">
+      {/* Sparkles Header */}
+      <SparklesHeader />
+      
       {/* Your existing Electron app content here */}
       <div className="p-8">
         <h1 className="text-2xl font-bold mb-8">Electron + React + Gooey Menu</h1>
