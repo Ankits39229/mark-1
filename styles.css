@@ -19,6 +19,7 @@ body {
     padding: 0;
     border: none;
     outline: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Custom Title Bar Styles - Seamlessly integrated */
@@ -35,6 +36,7 @@ body {
     box-sizing: border-box;
     border: none;
     outline: none;
+    transition: background-color 0.3s ease;
     /* Ensure no borders or separators */
 }
 
@@ -201,6 +203,7 @@ body {
     padding: 0;
     border: none;
     outline: none;
+    transition: background-color 0.3s ease;
     /* Ensure no gaps */
 }
 
@@ -339,6 +342,7 @@ body {
 
 .dark-theme .custom-title-bar {
     background-color: #2d2d2d;
+    border-bottom: 1px solid #404040;
 }
 
 .dark-theme .app-name {
@@ -365,6 +369,7 @@ body {
 .dark-theme .content-header {
     background-color: #2d2d2d;
     color: #e0e0e0;
+    border-bottom: 1px solid #404040;
 }
 
 .dark-theme .content-header h1 {
@@ -374,6 +379,12 @@ body {
 .dark-theme .card {
     background: #2d2d2d;
     color: #e0e0e0;
+    border: 1px solid #404040;
+}
+
+.dark-theme .card:hover {
+    border-color: #4a9eff;
+    box-shadow: 0 5px 25px rgba(74, 158, 255, 0.15);
 }
 
 .dark-theme .card h3 {

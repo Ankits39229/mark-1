@@ -166,6 +166,9 @@ class GooeyMenu {
 
     animateIconChange(opening) {
         if (opening) {
+            this.menuIcon.style.transition = 'all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+            this.closeIcon.style.transition = 'all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+            
             this.menuIcon.classList.add('gooey-icon-animate-out');
             setTimeout(() => {
                 this.menuIcon.classList.add('hidden');
@@ -173,6 +176,9 @@ class GooeyMenu {
                 this.closeIcon.classList.add('gooey-icon-animate-in');
             }, 100);
         } else {
+            this.closeIcon.style.transition = 'all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+            this.menuIcon.style.transition = 'all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+            
             this.closeIcon.classList.add('gooey-icon-animate-out');
             setTimeout(() => {
                 this.closeIcon.classList.add('hidden');
@@ -180,6 +186,12 @@ class GooeyMenu {
                 this.menuIcon.classList.add('gooey-icon-animate-in');
             }, 100);
         }
+        
+        // Clean up animation classes after animation completes
+        setTimeout(() => {
+            this.menuIcon.classList.remove('gooey-icon-animate-in', 'gooey-icon-animate-out');
+            this.closeIcon.classList.remove('gooey-icon-animate-in', 'gooey-icon-animate-out');
+        }, 500);
     }
 
     animateItems(opening) {
@@ -188,9 +200,19 @@ class GooeyMenu {
         const multiplier = (direction === 'left' || direction === 'top') ? -1 : 1;
         
         this.menuItems.forEach((item, index) => {
+            // Clear any existing transitions to prevent jitter
+            item.style.transition = 'none';
+            
+            // Force a reflow to ensure the transition is cleared
+            item.offsetHeight;
+            
+            // Re-enable smooth transitions
+            item.style.transition = 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+            item.style.transitionDelay = opening ? `${index * 50}ms` : `${(this.menuItems.length - index - 1) * 30}ms`;
+            
             if (opening) {
                 const distance = (index + 1) * 100 * multiplier;
-                const offset = (index + 1) * 10 * multiplier;
+                const offset = (index + 1) * 12 * multiplier;
                 const transform = axis === 'X' 
                     ? `translateX(calc(${distance}% + ${-offset}px))`
                     : `translateY(calc(${distance}% + ${-offset}px))`;
