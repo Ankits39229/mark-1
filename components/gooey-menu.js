@@ -2,11 +2,13 @@ class GooeyMenu {
     constructor(containerId, options = {}) {
         this.container = document.getElementById(containerId);
         this.isOpen = false;
+        this.isAnimating = false;
+        
         this.options = {
             direction: options.direction || 'top',
             items: options.items || [],
-            duration: options.duration || 0.5,
-            bounce: options.bounce || 0.3,
+            duration: options.duration || 300, // Consistent timing in ms
+            stagger: options.stagger || 50,    // Stagger delay between items
             onChange: options.onChange || null,
             ...options
         };
@@ -19,17 +21,17 @@ class GooeyMenu {
         this.createHTML();
         this.bindEvents();
         this.createSVGFilter();
-        this.addPulseEffect();
+        this.addInitialPulse();
     }
 
-    addPulseEffect() {
-        // Add a subtle pulse effect on load to draw attention
+    addInitialPulse() {
+        // Single subtle pulse effect on initialization
         setTimeout(() => {
             this.menuToggle.classList.add('pulse');
             setTimeout(() => {
                 this.menuToggle.classList.remove('pulse');
-            }, 4000);
-        }, 1000);
+            }, 2000);
+        }, 800);
     }
 
     createHTML() {
@@ -59,13 +61,17 @@ class GooeyMenu {
                         aria-label="Open menu"
                     >
                         <span class="gooey-menu-icon menu-icon">☰</span>
-                        <span class="gooey-menu-icon close-icon hidden">✕</span>
+                        <span class="gooey-menu-icon close-icon">✕</span>
                     </button>
                 </div>
             </div>
         `;
         
         this.container.innerHTML = menuHTML;
+        this.cacheElements();
+    }
+
+    cacheElements() {
         this.menuToggle = this.container.querySelector('.gooey-menu-toggle');
         this.menuItems = this.container.querySelectorAll('.gooey-menu-item');
         this.menuItemsContainer = this.container.querySelector('.gooey-menu-items');
@@ -74,22 +80,18 @@ class GooeyMenu {
     }
 
     bindEvents() {
-        // Toggle menu
         this.menuToggle.addEventListener('click', () => this.toggle());
         
-        // Menu item clicks
         this.menuItems.forEach((item, index) => {
             item.addEventListener('click', () => this.handleItemClick(index));
         });
 
-        // Close on escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && this.isOpen) {
                 this.close();
             }
         });
 
-        // Close when clicking outside
         document.addEventListener('click', (e) => {
             if (this.isOpen && !this.container.contains(e.target)) {
                 this.close();
@@ -119,12 +121,13 @@ class GooeyMenu {
         
         document.body.appendChild(svg);
         
-        // Apply filter to menu container
         const menuContainer = this.container.querySelector('.gooey-menu-container');
         menuContainer.style.filter = `url(#${this.filterId})`;
     }
 
     toggle() {
+        if (this.isAnimating) return;
+        
         if (this.isOpen) {
             this.close();
         } else {
@@ -132,218 +135,229 @@ class GooeyMenu {
         }
     }
 
-    open() {
+    async open() {
+        if (this.isAnimating) return;
+        
+        this.isAnimating = true;
         this.isOpen = true;
-        this.menuToggle.setAttribute('aria-expanded', 'true');
-        this.menuToggle.setAttribute('aria-label', 'Close menu');
-        this.menuItemsContainer.setAttribute('aria-hidden', 'false');
         
-        // Update tabindex for accessibility
-        this.menuItems.forEach(item => item.setAttribute('tabindex', '0'));
+        this.updateAccessibilityAttributes(true);
         
-        // Animate icon change
-        this.animateIconChange(true);
+        // Animate toggle button icon and items simultaneously
+        await Promise.all([
+            this.animateToggleIcon(true),
+            this.animateMenuItems(true)
+        ]);
         
-        // Animate menu items
-        this.animateItems(true);
+        this.isAnimating = false;
     }
 
-    close() {
+    async close() {
+        if (this.isAnimating) return;
+        
+        this.isAnimating = true;
+        
+        this.updateAccessibilityAttributes(false);
+        
+        // Animate toggle button icon and items simultaneously
+        await Promise.all([
+            this.animateToggleIcon(false),
+            this.animateMenuItems(false)
+        ]);
+        
         this.isOpen = false;
-        this.menuToggle.setAttribute('aria-expanded', 'false');
-        this.menuToggle.setAttribute('aria-label', 'Open menu');
-        this.menuItemsContainer.setAttribute('aria-hidden', 'true');
-        
-        // Update tabindex for accessibility
-        this.menuItems.forEach(item => item.setAttribute('tabindex', '-1'));
-        
-        // Animate icon change
-        this.animateIconChange(false);
-        
-        // Animate menu items
-        this.animateItems(false);
+        this.isAnimating = false;
     }
 
-    animateIconChange(opening) {
-        if (opening) {
-            this.menuIcon.style.transition = 'all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-            this.closeIcon.style.transition = 'all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-            
-            this.menuIcon.classList.add('gooey-icon-animate-out');
-            setTimeout(() => {
-                this.menuIcon.classList.add('hidden');
-                this.closeIcon.classList.remove('hidden');
-                this.closeIcon.classList.add('gooey-icon-animate-in');
-            }, 100);
-        } else {
-            this.closeIcon.style.transition = 'all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-            this.menuIcon.style.transition = 'all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-            
-            this.closeIcon.classList.add('gooey-icon-animate-out');
-            setTimeout(() => {
-                this.closeIcon.classList.add('hidden');
-                this.menuIcon.classList.remove('hidden');
-                this.menuIcon.classList.add('gooey-icon-animate-in');
-            }, 100);
-        }
+    updateAccessibilityAttributes(opening) {
+        this.menuToggle.setAttribute('aria-expanded', opening.toString());
+        this.menuToggle.setAttribute('aria-label', opening ? 'Close menu' : 'Open menu');
+        this.menuItemsContainer.setAttribute('aria-hidden', (!opening).toString());
         
-        // Clean up animation classes after animation completes
-        setTimeout(() => {
-            this.menuIcon.classList.remove('gooey-icon-animate-in', 'gooey-icon-animate-out');
-            this.closeIcon.classList.remove('gooey-icon-animate-in', 'gooey-icon-animate-out');
-        }, 500);
+        const tabIndex = opening ? '0' : '-1';
+        this.menuItems.forEach(item => item.setAttribute('tabindex', tabIndex));
     }
 
-    animateItems(opening) {
-        const direction = this.options.direction;
-        const axis = (direction === 'left' || direction === 'right') ? 'X' : 'Y';
-        const multiplier = (direction === 'left' || direction === 'top') ? -1 : 1;
-        
-        this.menuItems.forEach((item, index) => {
-            // Clear any existing transitions to prevent jitter
-            item.style.transition = 'none';
+    animateToggleIcon(opening) {
+        return new Promise(resolve => {
+            const showIcon = opening ? this.closeIcon : this.menuIcon;
+            const hideIcon = opening ? this.menuIcon : this.closeIcon;
             
-            // Force a reflow to ensure the transition is cleared
-            item.offsetHeight;
+            // Smooth transition using CSS classes
+            hideIcon.classList.add('icon-hide');
+            showIcon.classList.add('icon-show');
             
-            // Re-enable smooth transitions
-            item.style.transition = 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-            item.style.transitionDelay = opening ? `${index * 50}ms` : `${(this.menuItems.length - index - 1) * 30}ms`;
-            
-            if (opening) {
-                const distance = (index + 1) * 100 * multiplier;
-                const offset = (index + 1) * 12 * multiplier;
-                const transform = axis === 'X' 
-                    ? `translateX(calc(${distance}% + ${-offset}px))`
-                    : `translateY(calc(${distance}% + ${-offset}px))`;
-                
-                item.style.transform = transform;
-                item.classList.add('animate-out');
-            } else {
-                item.style.transform = 'translate(0, 0)';
-                item.classList.remove('animate-out');
-            }
+            setTimeout(() => {
+                hideIcon.classList.remove('icon-hide');
+                showIcon.classList.remove('icon-show');
+                resolve();
+            }, this.options.duration);
         });
+    }
+
+    animateMenuItems(opening) {
+        return new Promise(resolve => {
+            const { direction, duration, stagger } = this.options;
+            const totalDuration = duration + (this.menuItems.length - 1) * stagger;
+            
+            this.menuItems.forEach((item, index) => {
+                const delay = opening ? index * stagger : (this.menuItems.length - index - 1) * stagger;
+                
+                setTimeout(() => {
+                    if (opening) {
+                        const transform = this.getItemTransform(index);
+                        item.style.transform = transform;
+                        item.classList.add('menu-item-active');
+                    } else {
+                        item.style.transform = 'translate(0, 0) scale(0.8)';
+                        item.classList.remove('menu-item-active');
+                    }
+                }, delay);
+            });
+            
+            setTimeout(resolve, totalDuration);
+        });
+    }
+
+    getItemTransform(index) {
+        const { direction } = this.options;
+        const distance = (index + 1) * 80; // Reduced for smoother feel
+        const offset = (index + 1) * 8;    // Reduced spacing
+        
+        switch (direction) {
+            case 'left':
+                return `translateX(calc(-${distance}% - ${offset}px)) scale(1)`;
+            case 'right':
+                return `translateX(calc(${distance}% + ${offset}px)) scale(1)`;
+            case 'top':
+                return `translateY(calc(-${distance}% - ${offset}px)) scale(1)`;
+            case 'bottom':
+                return `translateY(calc(${distance}% + ${offset}px)) scale(1)`;
+            default:
+                return `translateY(calc(-${distance}% - ${offset}px)) scale(1)`;
+        }
     }
 
     handleItemClick(index) {
         const item = this.options.items[index];
-        this.close();
         
-        if (this.options.onChange && typeof this.options.onChange === 'function') {
-            this.options.onChange(item, index);
-        }
+        // Add click feedback
+        const clickedItem = this.menuItems[index];
+        clickedItem.classList.add('item-clicked');
+        
+        setTimeout(() => {
+            clickedItem.classList.remove('item-clicked');
+            this.close();
+            
+            if (this.options.onChange && typeof this.options.onChange === 'function') {
+                this.options.onChange(item, index);
+            }
+        }, 150);
     }
 }
 
-// Initialize gooey menu when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    // Custom menu items for your app
-    const customItems = [
-        { icon: '🔄', name: 'Check for Updates', value: 'updates' },
-        { icon: '🔔', name: 'Notifications', value: 'notifications' },
-        { icon: '🌙', name: 'Theme Toggle', value: 'theme' }
-    ];
+// Application Integration
+class MenuManager {
+    constructor() {
+        this.theme = localStorage.getItem('theme') || 'light';
+        this.notifications = JSON.parse(localStorage.getItem('notifications') || 'true');
+        this.init();
+    }
 
-    // Create gooey menu instances
-    const bottomRightMenu = new GooeyMenu('gooey-menu-bottom-right', {
-        items: customItems,
-        direction: 'left',
-        onChange: (item, index) => {
-            console.log('Menu item clicked:', item.name, item.value);
-            // Add your custom logic here
-            handleMenuAction(item.value);
-        }
-    });
+    init() {
+        this.initializeMenu();
+        this.applyTheme();
+    }
 
-    // Handle menu actions
-    function handleMenuAction(action) {
-        switch(action) {
+    initializeMenu() {
+        const menuItems = [
+            { icon: '🔄', name: 'Check for Updates', value: 'updates' },
+            { icon: '🔔', name: 'Notifications', value: 'notifications' },
+            { icon: this.theme === 'dark' ? '☀️' : '🌙', name: 'Theme Toggle', value: 'theme' }
+        ];
+
+        this.menu = new GooeyMenu('gooey-menu-bottom-right', {
+            items: menuItems,
+            direction: 'left',
+            duration: 250,
+            stagger: 40,
+            onChange: (item, index) => this.handleMenuAction(item.value, item)
+        });
+    }
+
+    handleMenuAction(action, item) {
+        switch (action) {
             case 'updates':
-                checkForUpdates();
+                this.checkForUpdates();
                 break;
             case 'notifications':
-                toggleNotifications();
+                this.toggleNotifications();
                 break;
             case 'theme':
-                toggleTheme();
+                this.toggleTheme();
                 break;
             default:
-                console.log('Unknown action:', action);
+                console.warn('Unknown menu action:', action);
         }
     }
 
-    // Custom action functions
-    function checkForUpdates() {
-        console.log('Checking for updates...');
-        // Show a notification or modal
-        showNotification('Checking for updates...', 'info');
-    }
-
-    function toggleNotifications() {
-        console.log('Toggling notifications...');
-        // Toggle notification panel or settings
-        showNotification('Notifications panel opened', 'info');
-    }
-
-    function toggleTheme() {
-        console.log('Toggling theme...');
-        // Toggle between light and dark theme
-        const body = document.body;
-        const isCurrentlyDark = body.classList.contains('dark-theme');
+    checkForUpdates() {
+        this.showNotification('Checking for updates...', 'info');
         
-        if (isCurrentlyDark) {
-            body.classList.remove('dark-theme');
-            localStorage.setItem('theme', 'light');
-            updateThemeIcon('🌙');
-            showNotification('Switched to Light Theme', 'success');
-        } else {
-            body.classList.add('dark-theme');
-            localStorage.setItem('theme', 'dark');
-            updateThemeIcon('☀️');
-            showNotification('Switched to Dark Theme', 'success');
-        }
+        // Simulate update check
+        setTimeout(() => {
+            this.showNotification('Your app is up to date!', 'success');
+        }, 2000);
     }
 
-    function updateThemeIcon(newIcon) {
+    toggleNotifications() {
+        this.notifications = !this.notifications;
+        localStorage.setItem('notifications', JSON.stringify(this.notifications));
+        
+        const status = this.notifications ? 'enabled' : 'disabled';
+        this.showNotification(`Notifications ${status}`, 'info');
+    }
+
+    toggleTheme() {
+        this.theme = this.theme === 'dark' ? 'light' : 'dark';
+        localStorage.setItem('theme', this.theme);
+        
+        this.applyTheme();
+        this.updateThemeIcon();
+        
+        const themeName = this.theme.charAt(0).toUpperCase() + this.theme.slice(1);
+        this.showNotification(`Switched to ${themeName} Theme`, 'success');
+    }
+
+    applyTheme() {
+        document.body.classList.toggle('dark-theme', this.theme === 'dark');
+    }
+
+    updateThemeIcon() {
         const themeButton = document.querySelector('[data-value="theme"]');
         if (themeButton) {
-            themeButton.innerHTML = newIcon + '<span class="sr-only">Theme Toggle</span>';
+            const newIcon = this.theme === 'dark' ? '☀️' : '🌙';
+            themeButton.innerHTML = `${newIcon}<span class="sr-only">Theme Toggle</span>`;
         }
     }
 
-    function showNotification(message, type = 'info') {
-        // Create a simple notification
+    showNotification(message, type = 'info') {
+        if (!this.notifications) return;
+
         const notification = document.createElement('div');
-        notification.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: ${type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#2196F3'};
-            color: white;
-            padding: 12px 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            z-index: 10000;
-            font-family: inherit;
-            font-size: 14px;
-            opacity: 0;
-            transform: translateX(100%);
-            transition: all 0.3s ease;
-        `;
+        notification.className = `notification notification--${type}`;
         notification.textContent = message;
+        
         document.body.appendChild(notification);
 
-        // Animate in
-        setTimeout(() => {
-            notification.style.opacity = '1';
-            notification.style.transform = 'translateX(0)';
-        }, 10);
+        // Trigger animation
+        requestAnimationFrame(() => {
+            notification.classList.add('notification--show');
+        });
 
-        // Remove after 3 seconds
+        // Auto-remove after 3 seconds
         setTimeout(() => {
-            notification.style.opacity = '0';
-            notification.style.transform = 'translateX(100%)';
+            notification.classList.remove('notification--show');
             setTimeout(() => {
                 if (notification.parentNode) {
                     notification.parentNode.removeChild(notification);
@@ -351,13 +365,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 300);
         }, 3000);
     }
+}
 
-    // Load saved theme on startup and set appropriate icon
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-        document.body.classList.add('dark-theme');
-        setTimeout(() => updateThemeIcon('☀️'), 500);
-    } else {
-        setTimeout(() => updateThemeIcon('🌙'), 500);
-    }
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    new MenuManager();
 });

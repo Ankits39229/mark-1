@@ -22,7 +22,7 @@ const items: MenuItem[] = [
 ];
 
 const TDATA: TabItem[] = [
-  { name: "0.4s", value: 0.4 },
+  { name: "0.6s", value: 0.6 },
   { name: "2s", value: 2 },
 ];
 
@@ -47,7 +47,7 @@ const GooeyButtonDemo = () => {
       <GooeyMenu
         items={items}
         direction={dir.value}
-        transition={{ type: "spring", bounce: 0.3, duration: dur.value }}
+        transition={{ type: "spring", bounce: 0.25, duration: dur.value }}
       />
     </div>
   );

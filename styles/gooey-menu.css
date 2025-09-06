@@ -24,27 +24,28 @@
     left: 0;
     width: 48px;
     height: 48px;
-    background-color: #667eea;
-    color: #fff;
-    border: none;
+    background-color: #EAF4F4;
+    color: #000000;
+    border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 50%;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 18px;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    opacity: 0.8;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+    opacity: 0.85;
     transform: translate(0, 0);
-    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
-    will-change: transform, opacity;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+    will-change: transform, opacity, background-color;
 }
 
 .gooey-menu-item:hover {
     opacity: 1;
-    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
-    background: linear-gradient(135deg, #4a9eff 0%, #667eea 100%);
-    transform: translate(0, 0) scale(1.05);
+    background-color: #CCE3DE;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+    transform: translate(0, 0) scale(1.1);
+    border-color: rgba(0, 0, 0, 0.2);
 }
 
 .gooey-menu-item.animate-out {
@@ -56,37 +57,42 @@
     z-index: 10;
     width: 48px;
     height: 48px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: #fff;
-    border: none;
+    background-color: #EAF4F4;
+    color: #000000;
+    border: 2px solid rgba(0, 0, 0, 0.2);
     border-radius: 50%;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 18px;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-    will-change: transform;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    will-change: transform, background-color, box-shadow;
 }
 
 .gooey-menu-toggle:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    background-color: #CCE3DE;
+    transform: scale(1.12);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+    border-color: rgba(0, 0, 0, 0.3);
 }
 
 .gooey-menu-toggle:active {
-    transform: scale(0.95);
+    transform: scale(0.98);
+    background-color: #CCE3DE;
 }
 
 .gooey-menu-icon {
-    transition: all 0.2s ease;
+    transition: all 0.25s cubic-bezier(0.23, 1, 0.320, 1);
     position: absolute;
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
 }
 
 .gooey-menu-icon.hidden {
     opacity: 0;
-    transform: scale(0);
+    transform: scale(0.6) rotate(90deg);
 }
 
 /* Fixed position for bottom-right */
@@ -121,14 +127,19 @@
 /* Animation keyframes */
 @keyframes gooey-blur-in {
     from {
-        filter: blur(2px);
+        filter: blur(3px);
         opacity: 0;
-        transform: scale(0.8);
+        transform: scale(0.7) rotate(-10deg);
+    }
+    50% {
+        filter: blur(1px);
+        opacity: 0.8;
+        transform: scale(1.05) rotate(2deg);
     }
     to {
         filter: blur(0px);
         opacity: 1;
-        transform: scale(1);
+        transform: scale(1) rotate(0deg);
     }
 }
 
@@ -136,48 +147,55 @@
     from {
         filter: blur(0px);
         opacity: 1;
-        transform: scale(1);
+        transform: scale(1) rotate(0deg);
     }
     to {
-        filter: blur(2px);
+        filter: blur(3px);
         opacity: 0;
-        transform: scale(0.8);
+        transform: scale(0.7) rotate(10deg);
     }
 }
 
 @keyframes bounce-in {
     0% {
-        transform: scale(0.8);
+        transform: scale(0.6) rotate(-15deg);
         opacity: 0;
     }
     50% {
-        transform: scale(1.1);
+        transform: scale(1.15) rotate(5deg);
         opacity: 0.9;
     }
+    75% {
+        transform: scale(0.95) rotate(-2deg);
+        opacity: 1;
+    }
     100% {
-        transform: scale(1);
+        transform: scale(1) rotate(0deg);
         opacity: 1;
     }
 }
 
 .gooey-icon-animate-in {
-    animation: bounce-in 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    animation: bounce-in 0.35s cubic-bezier(0.23, 1, 0.320, 1) forwards;
 }
 
 .gooey-icon-animate-out {
-    animation: gooey-blur-out 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    animation: gooey-blur-out 0.2s cubic-bezier(0.23, 1, 0.320, 1) forwards;
 }
 
 /* Pulse effect for the toggle button */
 @keyframes pulse {
     0% {
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        border-color: rgba(0, 0, 0, 0.2);
     }
     50% {
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.5), 0 0 0 10px rgba(102, 126, 234, 0.1);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), 0 0 0 8px rgba(204, 227, 222, 0.3);
+        border-color: rgba(0, 0, 0, 0.3);
     }
     100% {
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        border-color: rgba(0, 0, 0, 0.2);
     }
 }
 
@@ -212,26 +230,29 @@
 
 /* Dark theme support */
 .dark-theme .gooey-menu-item {
-    background-color: #4a9eff;
+    background-color: #2a3a3a;
     color: #ffffff;
-    border: 1px solid rgba(74, 158, 255, 0.3);
-    box-shadow: 0 2px 8px rgba(74, 158, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 3px 10px rgba(255, 255, 255, 0.1);
 }
 
 .dark-theme .gooey-menu-item:hover {
-    background: linear-gradient(135deg, #6bb6ff 0%, #4a9eff 100%);
-    border-color: rgba(74, 158, 255, 0.6);
-    box-shadow: 0 4px 16px rgba(74, 158, 255, 0.4);
-    transform: translate(0, 0) scale(1.05);
+    background-color: #3a4a4a;
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 5px 20px rgba(255, 255, 255, 0.15);
+    transform: translate(0, 0) scale(1.1);
 }
 
 .dark-theme .gooey-menu-toggle {
-    background: linear-gradient(135deg, #4a9eff 0%, #357abd 100%);
-    border: 1px solid rgba(74, 158, 255, 0.3);
-    box-shadow: 0 4px 12px rgba(74, 158, 255, 0.4);
+    background-color: #2a3a3a;
+    color: #ffffff;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
 }
 
 .dark-theme .gooey-menu-toggle:hover {
-    box-shadow: 0 6px 20px rgba(74, 158, 255, 0.5);
-    transform: scale(1.05);
+    background-color: #3a4a4a;
+    box-shadow: 0 6px 25px rgba(255, 255, 255, 0.2);
+    transform: scale(1.12);
+    border-color: rgba(255, 255, 255, 0.3);
 }

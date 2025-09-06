@@ -7,20 +7,21 @@ import {
     motion,
     AnimatePresence,
     Transition,
-} from "motion/react";
+} from "framer-motion";
 import { useEffect, useId, useState } from "react";
 import { TbX, TbMenu } from "react-icons/tb";
 
 const blurAni: MotionProps = {
   variants: {
-    ini: { filter: "blur(4px)" },
-    ani: { filter: "blur(0px)" },
-    exit: { filter: "blur(4px)", opacity: 0 },
+    ini: { filter: "blur(6px)", scale: 0.8, opacity: 0.5 },
+    ani: { filter: "blur(0px)", scale: 1, opacity: 1 },
+    exit: { filter: "blur(6px)", opacity: 0, scale: 0.8 },
   },
 
   initial: "ini",
   animate: "ani",
   exit: "exit",
+  transition: { duration: 0.4, ease: [0.23, 1, 0.320, 1] },
 };
 
 export interface MenuItem {
@@ -43,7 +44,7 @@ function GooeyMenu({
   items,
   className,
   onChange,
-  transition = { type: "spring", duration: 0.5, bounce: 0.3 },
+  transition = { type: "spring", duration: 0.6, bounce: 0.25 },
   filterId: _fi = "gooey-menu-filter",
   direction = "top",
 }: Props) {
@@ -96,7 +97,11 @@ function GooeyMenu({
                   }}
                   className={cn(
                     "absolute inset-0 flex size-12 cursor-pointer items-center justify-center rounded-full",
-                    "bg-black text-white [&>svg]:transition-opacity [&>svg]:opacity-60 hover:[&>svg]:opacity-100",
+                    "bg-[#EAF4F4] text-black border border-black/10 shadow-sm",
+                    "hover:bg-[#CCE3DE] hover:scale-105 hover:shadow-md",
+                    "active:scale-95 active:bg-[#CCE3DE]",
+                    "transition-all duration-300 ease-out",
+                    "[&>svg]:transition-all [&>svg]:duration-300 [&>svg]:opacity-70 hover:[&>svg]:opacity-100",
                   )}
                   onClick={() => handleClick(i)}
                 >
@@ -109,7 +114,11 @@ function GooeyMenu({
 
           <button
             className={cn(
-              "relative z-10 flex size-12 cursor-pointer items-center justify-center rounded-full bg-black text-white",
+              "relative z-10 flex size-12 cursor-pointer items-center justify-center rounded-full",
+              "bg-[#EAF4F4] text-black border border-black/20 shadow-lg",
+              "hover:bg-[#CCE3DE] hover:scale-110 hover:shadow-xl hover:border-black/30",
+              "active:scale-100 active:bg-[#CCE3DE]",
+              "transition-all duration-300 ease-out",
               className,
             )}
             onClick={() => setOpen(!open)}
